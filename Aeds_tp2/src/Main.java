@@ -3,6 +3,7 @@ import Sorting.*;
 public class Main {
     public static void main(String[] args) {
         BubbleSort bubble = new BubbleSort();
+        InsertionSort insertion = new  InsertionSort();
         Item[] arr = {
             new Item(64),
             new Item(34),
@@ -13,10 +14,12 @@ public class Main {
             new Item(90)
         };
         int n = arr.length;
-        bubble.bubble_sort(arr, n);
-        System.out.println("Sorted array: ");
-        for (int i = 0; i < n; i++) {
-            System.out.print(arr[i].getValue() + " ");
-        }
+        //bubble.bubble_sort(arr, n);
+        System.out.println("Bubble sorted array: ");
+        Utils.printArray(arr, n);
+        insertion.insertion_sort(arr);
+        System.out.println("Insertion sorted array: ");
+        Utils.printArray(arr, n);
     }
+    
 }

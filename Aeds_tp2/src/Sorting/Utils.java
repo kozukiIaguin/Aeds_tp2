@@ -6,7 +6,6 @@ public class Utils {
         arr[index1] = arr[index2];
         arr[index2] = temp;
     }
-
     // Método que imprime um array de objetos Item
     public static void printArray(Item[] arr, int size) {
         for (int i = 0; i < size; i++) {
