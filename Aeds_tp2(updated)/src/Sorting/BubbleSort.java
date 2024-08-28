@@ -1,28 +1,47 @@
 package Sorting;
 
 public class BubbleSort {
-    
-    public void bubble_sort(Item[] arr,int n){
-        
-        @SuppressWarnings("unused")//parar de encher meu saco
+
+    private int comparisonCount;
+    private int swapCount;
+
+    public BubbleSort() {
+        this.comparisonCount = 0;
+        this.swapCount = 0;
+    }
+
+    public int[] bubbleSort(Item[] arr, int n) {
+
         boolean swapped;
-        int swap_count=0;
-        int comparsion_count=0;
         for (int i = 0; i < n - 1; i++) {
             swapped = false;
-            // Percorre o array até n-i-1
+            // Traverse the array until n-i-1
             for (int j = 0; j < n - i - 1; j++) {
-                // Compara os valores usando getValue()
+                // Compare the values using getValue()
                 if (arr[j].getValue() > arr[j + 1].getValue()) {
-                    comparsion_count++;
-                    // Troca os elementos usando o método swap
+                    comparisonCount++;
+                    // Swap the elements using the swap method
                     Utils.swap(arr, j, j + 1);
                     swapped = true;
                     if (swapped) {
-                        swap_count++;
+                        swapCount++;
                     }
                 }
             }
         }
+        // Convert the Item array to int[] (assuming each Item has a getValue() method)
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            res[i] = arr[i].getValue();
+        }
+        return res;
+    }
+
+    public int getComparisonCount() {
+        return comparisonCount;
+    }
+
+    public int getSwapCount() {
+        return swapCount;
     }
 }

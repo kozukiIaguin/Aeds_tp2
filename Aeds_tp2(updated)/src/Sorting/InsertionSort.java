@@ -1,10 +1,15 @@
 package Sorting;
 
 public class InsertionSort {
-    public static void insertion_sort(Item[] arr){
-        int comparisonCount = 0;
-        int swapCount = 0;
+    private int comparisonCount;
+    private int swapCount;
 
+    public InsertionSort() {
+        this.comparisonCount = 0;
+        this.swapCount = 0;
+    }
+
+    public void insertion_sort(Item[] arr) {
         int n = arr.length;
         for (int i = 1; i < n; i++) {
             int key = arr[i].getValue();
@@ -20,5 +25,13 @@ public class InsertionSort {
         }
 
         System.out.println("InsertionSort - Comparisons: " + comparisonCount + ", Swaps: " + swapCount);
+    }
+
+    public int getComparisonCount() {
+        return comparisonCount;
+    }
+
+    public int getSwapCount() {
+        return swapCount;
     }
 }

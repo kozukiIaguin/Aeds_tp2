@@ -9,119 +9,166 @@ import java.io.FileWriter;
 
 public class Main {
     public static void main(String[] args) {
+        BubbleSort bubble = new BubbleSort();
+        SelectionSort selection = new SelectionSort();
+        InsertionSort insertion = new InsertionSort();
+        QuickSort quick = new QuickSort();
         Scanner scanner = new Scanner(System.in);
-        String filePath = "random_numbers.txt";
 
-        // Gera o arquivo com números aleatórios
-        createRandomNumberFile(filePath, 100, 1, 200);
+        // Pergunta ao usuário qual tamanho de arquivo usar
+        System.out.println("Choose the size of the array to sort (100, 1000, 1000000): ");
+        int sizeChoice = scanner.nextInt();
+        scanner.nextLine(); // Limpa o buffer
 
-        // Lê o array a partir do arquivo e executa o algoritmo de ordenação
+        String filePath;
+        switch (sizeChoice) {
+            case 100:
+                filePath = "random_numbers100.txt";
+                break;
+            case 1000:
+                filePath = "random_numbers1000.txt";
+                break;
+            case 1000000:
+                filePath = "random_numbers1000000.txt";
+                break;
+            default:
+                System.out.println("Invalid choice. Using default size 100.");
+                filePath = "random_numbers100.txt";
+                break;
+        }
+
+        // Carrega o array do arquivo escolhido
         Item[] arr = readItemFromFile(filePath);
+        if (arr == null) {
+            System.out.println("Error reading the file. Exiting.");
+            return;
+        }
 
-        if (arr != null) {
-            System.out.println("\nOriginal array:");
-            Utils.printArray(arr, arr.length);
+        System.out.println("Choose mode: -v (verbose) or -q (quick): ");
+        String mode = scanner.nextLine().trim();
+        int comparsions = 0, swaps = 0;
 
-            // Create instances of sorting algorithms
-            BubbleSort bubble = new BubbleSort();
-            InsertionSort insertion = new InsertionSort();
-            SelectionSort selection = new SelectionSort();
-            QuickSort quick = new QuickSort();
+        String method_choice = "";
+        if (mode.equalsIgnoreCase("-v") || mode.equalsIgnoreCase("-verbose")) {
+            System.out.println("Choose sorting method:");
+            System.out.println("1. SelectionSort");
+            System.out.println("2. InsertionSort");
+            System.out.println("3. BubbleSort");
+            System.out.println("4. QuickSort recursive");
+            System.out.println("5. QuickSort iterative");
+            System.out.println("6. QuickSort median of 3");
+            System.out.println("7. QuickSort median of 5");
+            System.out.println("8. QuickSort insertion");
 
-            // Menu for sorting algorithm choice
-            System.out.println("Choose a sorting algorithm:");
-            System.out.println("1. Bubble Sort");
-            System.out.println("2. Insertion Sort");
-            System.out.println("3. Selection Sort");
-            System.out.println("4. Quick Sort (Standard)");
-            System.out.println("5. Quick Sort (Median of Three)");
-            System.out.println("6. Quick Sort (Median of Five)");
-            System.out.println("7. Iterative Quick Sort");
-            System.out.println("8. Insertion Quick Sort");
-            System.out.print("Enter your choice (1-8): ");
-            int choice = scanner.nextInt();
-
-            // Perform the chosen sorting algorithm
-            long startTime, endTime;
-            switch (choice) {
+            int method = scanner.nextInt();
+            scanner.nextLine(); // Limpa o buffer
+            switch (method) {
                 case 1:
-                    startTime = System.currentTimeMillis();
-                    bubble.bubble_sort(arr, arr.length);
-                    endTime = System.currentTimeMillis();
-                    System.out.println("Bubble sorted array:");
-                    Utils.printArray(arr, arr.length);
+                    method_choice = "SelectionSort";
                     break;
                 case 2:
-                    startTime = System.currentTimeMillis();
-                    insertion.insertion_sort(arr);
-                    endTime = System.currentTimeMillis();
-                    System.out.println("Insertion sorted array:");
-                    Utils.printArray(arr, arr.length);
+                    method_choice = "InsertionSort";
                     break;
                 case 3:
-                    startTime = System.currentTimeMillis();
-                    selection.selection_sort(arr);
-                    endTime = System.currentTimeMillis();
-                    System.out.println("Selection sorted array:");
-                    Utils.printArray(arr, arr.length);
+                    method_choice = "BubbleSort";
                     break;
                 case 4:
-                    startTime = System.currentTimeMillis();
-                    quick.quick_sort(arr, 0, arr.length - 1);
-                    endTime = System.currentTimeMillis();
-                    System.out.println("Quick sorted array:");
-                    Utils.printArray(arr, arr.length);
+                    method_choice = "QuickSort recursive";
                     break;
                 case 5:
-                    startTime = System.currentTimeMillis();
-                    quick.three_median(arr);
-                    endTime = System.currentTimeMillis();
-                    System.out.println("Three median quick sorted array:");
-                    Utils.printArray(arr, arr.length);
+                    method_choice = "QuickSort iterative";
                     break;
                 case 6:
-                    startTime = System.currentTimeMillis();
-                    quick.five_median(arr);
-                    endTime = System.currentTimeMillis();
-                    System.out.println("Five median quick sorted array:");
-                    Utils.printArray(arr, arr.length);
+                    method_choice = "QuickSort median of 3";
                     break;
                 case 7:
-                    startTime = System.currentTimeMillis();
-                    quick.iterativeQuickSort(arr, 0, arr.length - 1);
-                    endTime = System.currentTimeMillis();
-                    System.out.println("Iterative Quick Sort:");
-                    Utils.printArray(arr, arr.length);
+                    method_choice = "QuickSort median of 5";
                     break;
                 case 8:
-                    startTime = System.currentTimeMillis();
-                    quick.insertionQuickSort(arr, 0, arr.length - 1);
-                    endTime = System.currentTimeMillis();
-                    System.out.println("Insertion Quick sorted array:");
-                    Utils.printArray(arr, arr.length);
+                    method_choice = "QuickSort insertion";
                     break;
                 default:
-                    System.out.println("Invalid choice. Please enter a number between 1 and 8.");
+                    System.out.println("Invalid choice.");
                     return;
             }
-
-            long duration = endTime - startTime;
-            System.out.println("Time taken: " + duration + " milliseconds");
-
-            
-
-            scanner.close();
+        } else if (mode.equalsIgnoreCase("-q") || mode.equalsIgnoreCase("-quick")) {
+            System.out.println("Enter the sorting method (SelectionSort, InsertionSort, etc.): ");
+            method_choice = scanner.nextLine().trim();
+        } else {
+            System.out.println("Invalid mode.");
+            return;
         }
+
+        switch (method_choice.toLowerCase()) {
+            case "selectionsort":
+                selection.selection_sort(arr);
+                comparsions = selection.getComparisonCount();
+                swaps = selection.getSwapCount();
+                break;
+            case "bubblesort":
+                bubble.bubbleSort(arr, arr.length);
+                comparsions = bubble.getComparisonCount();
+                swaps = bubble.getSwapCount();
+                break;
+            case "insertionsort":
+                insertion.insertion_sort(arr);
+                comparsions = insertion.getComparisonCount();
+                swaps = insertion.getSwapCount();
+                break;
+            case "quicksort recursive":
+                quick.quick_sort(arr, 0, arr.length);
+                comparsions = quick.getComparisonCount();
+                swaps = quick.getSwapCount();
+                break;
+            case "quicksort iterative":
+                quick.iterativeQuickSort(arr, 0, arr.length);
+                comparsions = quick.getComparisonCount();
+                swaps = quick.getSwapCount();
+                break;
+            case "median of 3 quicksort":
+                quick.three_median(arr);
+                comparsions = quick.getComparisonCount();
+                swaps = quick.getSwapCount();
+                break;
+            case "median of 5 quicksort":
+                quick.five_median(arr);
+                comparsions = quick.getComparisonCount();
+                swaps = quick.getSwapCount();
+                break;
+            case "insertion quicksort":
+                quick.insertionQuickSort(arr, 0, arr.length);
+                comparsions = quick.getComparisonCount();
+                swaps = quick.getSwapCount();
+                break;
+            default:
+                System.out.println("Invalid method.");
+                return;
+        }
+
+        // Escreve o resultado em um arquivo de saída
+        writeSortedFile(filePath, arr, comparsions, swaps);
     }
 
-    // Generates an array of random Items with values between 1 and 100
-    private static Item[] generateRandomArray(int size) {
-        Random rand = new Random();
-        Item[] arr = new Item[size];
-        for (int i = 0; i < size; i++) {
-            arr[i] = new Item(rand.nextInt(100) + 1);
+    // Function to write the sorted array to a file
+    private static void writeSortedFile(String filePath, Item[] arr, int comparisons, int swaps) {
+        String outputFilePath = filePath.replace(".txt", "_sorted.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
+            // Escreve as métricas
+            writer.write("Number of comparisons: " + comparisons);
+            writer.write(", Number of swaps: " + swaps);
+            writer.newLine();
+
+            // Escreve o array ordenado
+            for (int i = 0; i < arr.length; i++) {
+                writer.write(String.valueOf(arr[i].getValue()));
+                if (i < arr.length - 1) {
+                    writer.write(" ");
+                }
+            }
+            System.out.println("Output file created successfully: " + outputFilePath);
+        } catch (IOException e) {
+            System.out.println("Error writing file: " + e.getMessage());
         }
-        return arr;
     }
 
     // Function to read items from a file

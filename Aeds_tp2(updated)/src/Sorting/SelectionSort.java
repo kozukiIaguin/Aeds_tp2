@@ -1,10 +1,15 @@
 package Sorting;
 
 public class SelectionSort {
-    public void selection_sort(Item[] arr){
-        int comparisonCount = 0;
-        int swapCount = 0;
+    private int comparisonCount;
+    private int swapCount;
 
+    public SelectionSort() {
+        this.comparisonCount = 0;
+        this.swapCount = 0;
+    }
+
+    public void selection_sort(Item[] arr) {
         int n = arr.length;
         for (int i = 0; i < n - 1; i++) {
             int min_index = i;
@@ -21,5 +26,13 @@ public class SelectionSort {
         }
 
         System.out.println("SelectionSort - Comparisons: " + comparisonCount + ", Swaps: " + swapCount);
+    }
+
+    public int getComparisonCount() {
+        return comparisonCount;
+    }
+
+    public int getSwapCount() {
+        return swapCount;
     }
 }
