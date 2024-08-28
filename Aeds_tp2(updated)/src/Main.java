@@ -46,9 +46,9 @@ public class Main {
 
         System.out.println("Choose mode: -v (verbose) or -q (quick): ");
         String mode = scanner.nextLine().trim();
-        int comparsions = 0, swaps = 0;
+        int comparisons = 0, swaps = 0;
 
-        String method_choice = "";
+        String methodChoice = "";
         if (mode.equalsIgnoreCase("-v") || mode.equalsIgnoreCase("-verbose")) {
             System.out.println("Choose sorting method:");
             System.out.println("1. SelectionSort");
@@ -64,28 +64,28 @@ public class Main {
             scanner.nextLine(); // Limpa o buffer
             switch (method) {
                 case 1:
-                    method_choice = "SelectionSort";
+                    methodChoice = "SelectionSort";
                     break;
                 case 2:
-                    method_choice = "InsertionSort";
+                    methodChoice = "InsertionSort";
                     break;
                 case 3:
-                    method_choice = "BubbleSort";
+                    methodChoice = "BubbleSort";
                     break;
                 case 4:
-                    method_choice = "QuickSort recursive";
+                    methodChoice = "QuickSort recursive";
                     break;
                 case 5:
-                    method_choice = "QuickSort iterative";
+                    methodChoice = "QuickSort iterative";
                     break;
                 case 6:
-                    method_choice = "QuickSort median of 3";
+                    methodChoice = "QuickSort median of 3";
                     break;
                 case 7:
-                    method_choice = "QuickSort median of 5";
+                    methodChoice = "QuickSort median of 5";
                     break;
                 case 8:
-                    method_choice = "QuickSort insertion";
+                    methodChoice = "QuickSort insertion";
                     break;
                 default:
                     System.out.println("Invalid choice.");
@@ -93,51 +93,51 @@ public class Main {
             }
         } else if (mode.equalsIgnoreCase("-q") || mode.equalsIgnoreCase("-quick")) {
             System.out.println("Enter the sorting method (SelectionSort, InsertionSort, etc.): ");
-            method_choice = scanner.nextLine().trim();
+            methodChoice = scanner.nextLine().trim();
         } else {
             System.out.println("Invalid mode.");
             return;
         }
 
-        switch (method_choice.toLowerCase()) {
+        switch (methodChoice.toLowerCase()) {
             case "selectionsort":
                 selection.selection_sort(arr);
-                comparsions = selection.getComparisonCount();
+                comparisons = selection.getComparisonCount();
                 swaps = selection.getSwapCount();
                 break;
             case "bubblesort":
                 bubble.bubbleSort(arr, arr.length);
-                comparsions = bubble.getComparisonCount();
+                comparisons = bubble.getComparisonCount();
                 swaps = bubble.getSwapCount();
                 break;
             case "insertionsort":
                 insertion.insertion_sort(arr);
-                comparsions = insertion.getComparisonCount();
+                comparisons = insertion.getComparisonCount();
                 swaps = insertion.getSwapCount();
                 break;
             case "quicksort recursive":
-                quick.quick_sort(arr, 0, arr.length);
-                comparsions = quick.getComparisonCount();
+                quick.quick_sort(arr, 0, arr.length - 1);
+                comparisons = quick.getComparisonCount();
                 swaps = quick.getSwapCount();
                 break;
             case "quicksort iterative":
-                quick.iterativeQuickSort(arr, 0, arr.length);
-                comparsions = quick.getComparisonCount();
+                quick.iterativeQuickSort(arr, 0, arr.length - 1);
+                comparisons = quick.getComparisonCount();
                 swaps = quick.getSwapCount();
                 break;
-            case "median of 3 quicksort":
+            case "quicksort median of 3":
                 quick.three_median(arr);
-                comparsions = quick.getComparisonCount();
+                comparisons = quick.getComparisonCount();
                 swaps = quick.getSwapCount();
                 break;
-            case "median of 5 quicksort":
+            case "quicksort median of 5":
                 quick.five_median(arr);
-                comparsions = quick.getComparisonCount();
+                comparisons = quick.getComparisonCount();
                 swaps = quick.getSwapCount();
                 break;
-            case "insertion quicksort":
-                quick.insertionQuickSort(arr, 0, arr.length);
-                comparsions = quick.getComparisonCount();
+            case "quicksort insertion":
+                quick.insertionQuickSort(arr, 0, arr.length - 1);
+                comparisons = quick.getComparisonCount();
                 swaps = quick.getSwapCount();
                 break;
             default:
@@ -146,7 +146,7 @@ public class Main {
         }
 
         // Escreve o resultado em um arquivo de saída
-        writeSortedFile(filePath, arr, comparsions, swaps);
+        writeSortedFile(filePath, arr, comparisons, swaps);
     }
 
     // Function to write the sorted array to a file
