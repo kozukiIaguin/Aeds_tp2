@@ -9,17 +9,19 @@ import java.io.FileWriter;
 
 public class Main {
     public static void main(String[] args) {
+        // Instantiate sorting algorithms
         BubbleSort bubble = new BubbleSort();
         SelectionSort selection = new SelectionSort();
         InsertionSort insertion = new InsertionSort();
         QuickSort quick = new QuickSort();
         Scanner scanner = new Scanner(System.in);
 
-        // Pergunta ao usuário qual tamanho de arquivo usar
+        // Ask the user which file size to use
         System.out.println("Choose the size of the array to sort (100, 1000, 1000000): ");
         int sizeChoice = scanner.nextInt();
-        scanner.nextLine(); // Limpa o buffer
+        scanner.nextLine(); // Clear the buffer
 
+        // Determine the file path based on the user's choice
         String filePath;
         switch (sizeChoice) {
             case 100:
@@ -37,19 +39,21 @@ public class Main {
                 break;
         }
 
-        // Carrega o array do arquivo escolhido
+        // Load the array from the chosen file
         Item[] arr = readItemFromFile(filePath);
         if (arr == null) {
             System.out.println("Error reading the file. Exiting.");
             return;
         }
 
+        // Ask the user to choose the mode: verbose or quick
         System.out.println("Choose mode: -v (verbose) or -q (quick): ");
         String mode = scanner.nextLine().trim();
         int comparisons = 0, swaps = 0;
 
         String methodChoice = "";
         if (mode.equalsIgnoreCase("-v") || mode.equalsIgnoreCase("-verbose")) {
+            // Display menu for sorting method selection in verbose mode
             System.out.println("Choose sorting method:");
             System.out.println("1. SelectionSort");
             System.out.println("2. InsertionSort");
@@ -61,7 +65,7 @@ public class Main {
             System.out.println("8. QuickSort insertion");
 
             int method = scanner.nextInt();
-            scanner.nextLine(); // Limpa o buffer
+            scanner.nextLine(); // Clear the buffer
             switch (method) {
                 case 1:
                     methodChoice = "SelectionSort";
@@ -92,6 +96,7 @@ public class Main {
                     return;
             }
         } else if (mode.equalsIgnoreCase("-q") || mode.equalsIgnoreCase("-quick")) {
+            // Ask for sorting method directly in quick mode
             System.out.println("Enter the sorting method (SelectionSort, InsertionSort, etc.): ");
             methodChoice = scanner.nextLine().trim();
         } else {
@@ -99,6 +104,7 @@ public class Main {
             return;
         }
 
+        // Execute the selected sorting algorithm
         switch (methodChoice.toLowerCase()) {
             case "selectionsort":
                 selection.selection_sort(arr);
@@ -145,20 +151,20 @@ public class Main {
                 return;
         }
 
-        // Escreve o resultado em um arquivo de saída
+        // Write the result to an output file
         writeSortedFile(filePath, arr, comparisons, swaps);
     }
 
-    // Function to write the sorted array to a file
+    // Function to write the sorted array and metrics to a file
     private static void writeSortedFile(String filePath, Item[] arr, int comparisons, int swaps) {
         String outputFilePath = filePath.replace(".txt", "_sorted.txt");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
-            // Escreve as métricas
+            // Write the number of comparisons and swaps
             writer.write("Number of comparisons: " + comparisons);
             writer.write(", Number of swaps: " + swaps);
             writer.newLine();
 
-            // Escreve o array ordenado
+            // Write the sorted array
             for (int i = 0; i < arr.length; i++) {
                 writer.write(String.valueOf(arr[i].getValue()));
                 if (i < arr.length - 1) {
@@ -171,13 +177,13 @@ public class Main {
         }
     }
 
-    // Function to read items from a file
+    // Function to read items from a file and create an array of Items
     public static Item[] readItemFromFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            // Read the number of elements in the first line of the file
+            // Read the number of elements from the first line of the file
             int n = Integer.parseInt(br.readLine().trim());
 
-            // Read the elements in the second line of the file
+            // Read the elements from the second line and populate the array
             String[] elements = br.readLine().split(",");
             if (elements.length != n) {
                 System.out.println("The number of elements does not match the specified size.");
